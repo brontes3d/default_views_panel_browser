@@ -1,0 +1,12 @@
+= Default Views (panel browser)
+
+default views for resourceful views slightly fancier than 'default'.  Depends on DefaultViewsDefault. Also assumes you are using InheritedResources.
+
+For Example, controller should subclass DefaultViewsPanelBrowser::PanelBrowserController and call:
+
+	resourceful_views DefaultViewsPanelBrowser, DefaultViewsDefault	
+	
+	
+Copyright (c) 2009-2010 3M. All rights reserved. Released under the MIT license.
+
+Authored by Jacob Burkhart.

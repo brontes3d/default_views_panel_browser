@@ -1,0 +1,53 @@
+<div class="yui-gd">
+	<div class="yui-g first">
+		<label for="search">Search:</label> <input type="text" id="search" />
+
+		<ul class="panel_items">
+			<% collection.each do |r| %>
+				<li><%= link_to r.name, url_for(:action => 'show', :id => r) %></li>
+			<% end %>
+		</ul>
+		<% default_content_for(:panel_bottom) do %>
+			<% if self.controller.send(:action_methods).include?("new") %>
+				<%= link_to "New #{resource_instance_name.to_s.capitalize}", url_for(:action => 'new'), :id => 'new_link' %>
+			<% end %>
+		<% end %>
+	</div>
+
+	<div class="yui-g" id="details_panel">
+		<%=yield :details_panel%>
+	</div>
+
+</div>
+<%=yield :javascript_behavior%>
+
+<script type="text/javascript">
+	jQuery(document).ready(function($){
+		$('#search').val("");
+		$('#search').keyup(function(){
+			var val = this.value.toLowerCase();
+			if(val.length < 2){
+				$('ul.panel_items a').show();
+			}else{
+				jQuery.each($('ul.panel_items a'), function(index, item){
+					item_text = $(item).text().toLowerCase();
+					if(item_text.indexOf(val) >= 0){
+						$(item).show();
+					}else{
+						$(item).hide();
+					}
+				});
+			}
+		});
+		jQuery.each($('ul.panel_items a'), function(index, item){
+			$(item).click(function(){
+				$('#details_panel').load(item.href);
+				return false;
+			});
+		});
+		$('#new_link').click(function(){
+			$('#details_panel').load(this.href);
+			return false;
+		});
+	});
+</script>

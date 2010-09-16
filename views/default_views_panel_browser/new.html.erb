@@ -1,0 +1,20 @@
+<%=error_messages_for resource_instance_name %>
+
+<% form_for resource_instance_name, resource, :url  => { :action => "create" }, 
+											  :html => { :id     => 'create_form'} do |f| %>
+
+	<%=get_content_for_object('fields', f)%>
+
+	<br/>
+	
+	<%= submit_tag 'Create' %>
+
+	<% if resource.respond_to?(:get_redirect_to_url) %>
+		<%= link_to "cancel", resource.get_redirect_to_url(self), :id => 'cancel_link' %>
+	<% else %>
+		<%= link_to "cancel", url_for(:action => 'index'), :id => 'cancel_link_to_index'%>
+	<% end %>
+
+<% end %>
+
+<%= get_content_for(:new_javascript) %>

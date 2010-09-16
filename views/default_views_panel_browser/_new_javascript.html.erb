@@ -1,0 +1,29 @@
+<script type="text/javascript">
+	jQuery(function($){
+		if($('#details_panel')){
+			$('#create_form').submit(function(){
+				jQuery.ajax({
+						type: "POST",
+						url: this.action,
+						data: Form.serialize(this),
+						dataType: "html",
+						success: function(result){
+							$('#details_panel').html(result);
+						},
+						error: function(req, status, error){
+							update_error_flash(req.responseText);
+						}
+					});
+				return false;
+			});
+			$('cancel_link_to_index').click(function(){
+				$('#details_panel').html("");
+				return false;
+			});
+			$('#cancel_link').click(function(){
+				$('#details_panel').load(this.href);
+				return false;
+			});
+		}
+	});
+</script>

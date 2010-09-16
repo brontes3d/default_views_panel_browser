@@ -1,0 +1,27 @@
+<% set_default_content_for(:details_panel) do %>
+	<%=get_content_for(:show_contents)%>
+
+	<%=link_to "Edit", url_for( :action => 'edit', :id => resource ), :id => 'edit_link'%>
+	<br/><br/>
+	<%=link_to "Destroy", url_for(:action => 'destroy', :id => resource), :confirm => "Are you sure?", :method => :delete%>
+<% end %>
+
+<% content_for(:javascript_behavior) do %>
+	<script type="text/javascript">
+		jQuery(document).ready(function($){
+			if($('#details_panel')){		
+				$('#edit_link').click(function(){
+					$('#details_panel').load(this.href);
+					return false;
+				});
+			}
+		});
+	</script>
+<% end %>
+
+<% if request.xhr? %>
+	<%=yield :details_panel%>
+	<%=yield :javascript_behavior%>
+<% else %>
+	<%=render :partial => 'panel_wrapper'%>
+<% end %>

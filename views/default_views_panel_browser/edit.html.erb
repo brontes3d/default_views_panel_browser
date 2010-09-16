@@ -1,0 +1,43 @@
+<%=error_messages_for resource_instance_name %>
+
+<% form_for resource_instance_name, resource, :url => { :action => "update" }, 
+											 :html => { :method => :put, :id => 'edit_form' } do |f| %>
+	
+	<%=get_content_for_object('fields', f)%>
+	
+	<br/>
+	
+	<%= submit_tag 'Save' %>
+	<% if resource.respond_to?(:get_redirect_to_url) %>
+		<%= link_to "cancel", resource.get_redirect_to_url(self), :id => 'cancel_link'%>
+	<% else %>
+		<%= link_to "cancel", url_for(:action => 'show', :id => resource.to_param + "_xhr"), :id => 'cancel_link'%>
+	<% end %>
+	
+<% end %>
+
+<script type="text/javascript">
+	jQuery(document).ready(function($){
+		if($('#details_panel')){		
+			$('#edit_form').submit(function(){
+				jQuery.ajax({
+						type: "PUT",
+						url: this.action,
+						data: Form.serialize(this),
+						dataType: "html",
+						success: function(result){
+							$('#details_panel').html(result);
+						},
+						error: function(req, status, error){
+							update_error_flash(req.responseText);
+						}
+					});
+				return false;
+			});
+			$('#cancel_link').click(function(){
+				$('#details_panel').load(this.href);
+				return false;
+			});
+		}
+	});
+</script>
